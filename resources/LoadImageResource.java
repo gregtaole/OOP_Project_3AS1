@@ -6,7 +6,6 @@
 package resources;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import javax.imageio.ImageIO;
@@ -33,16 +32,16 @@ public final class LoadImageResource
     
     private LoadImageResource()
     {
-        textureAtlas =null;
-        GUIAtlas = null;
-        textureSheet = null;
-        GUISheet = null;
+        textureAtlas =loadImageAtlas(Reference.TEXTURE_ATLAS);
+        GUIAtlas = loadImageAtlas(Reference.GUI_ATLAS);
+        textureSheet = loadTextureFile(Reference.TEXTURE_SHEET);
+        GUISheet = loadTextureFile(Reference.GUI_SHEET);
     }
 
     public static BufferedImage getTexture(String textureName)
     {
         textureAtlas = loadImageAtlas(Reference.TEXTURE_ATLAS);
-         textureSheet = loadTextureFile(Reference.TEXTURE_SHEET);
+        textureSheet = loadTextureFile(Reference.TEXTURE_SHEET);
         Element textureElement;
         for(int i = 0 ; i < textureAtlas.getLength() ; ++i)
         {

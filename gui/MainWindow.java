@@ -20,23 +20,41 @@ import resources.Reference;
 
 public class MainWindow extends JFrame
 {
+    private CustomButton playButton;
+    private CustomButton optionButton;
+    private CustomButton quitButton;
+    
     public MainWindow()
     {
         initUI();
+    }
+    
+    private void mainMenu()
+    {
+        playButton = new CustomButton("New Game", "buttonBlue.png");
+        optionButton = new CustomButton("Options",  "buttonBlue.png");
+        quitButton = new CustomButton("Quit", "buttonBlue.png");
+        
+        playButton.addActionListener(e->playButtonClick());
+        optionButton.addActionListener(e->optionButtonClick());
+        quitButton.addActionListener(e->quitButtonClick());
+
+        this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
+        this.add(playButton);
+        this.add(optionButton);
+        this.add(quitButton);
+        
     }
     
     private void initUI()
     {
         setTitle("Projet POO");
         setLocationRelativeTo(null);
-        setSize(800, 600);
+        //setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         
-        CustomButton quitButton = new CustomButton("Quit", "buttonGreen.png");
-        
-        quitButton.addActionListener(e -> quitButtonClick( ));
-        
-        createLayout(quitButton);
+        mainMenu();
+        this.pack();
         
         try
         {
@@ -65,17 +83,16 @@ public class MainWindow extends JFrame
         }
     }
     
-    private void createLayout(JComponent... arg)
+    private void playButtonClick()
     {
-        Container pane = getContentPane();
-        GroupLayout gl = new GroupLayout(pane);
-        pane.setLayout(gl);
-        
-        gl.setAutoCreateContainerGaps(true);
-        
-        gl.setHorizontalGroup(gl.createSequentialGroup().addComponent(arg[0]));
-
-        gl.setVerticalGroup(gl.createSequentialGroup().addComponent(arg[0]));
+        System.out.println("Play");
+        //play();
+    }
+    
+    private void optionButtonClick()
+    {
+        System.out.println("Options");
+        //options();
     }
     
     private void quitButtonClick()
