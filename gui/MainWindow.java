@@ -10,12 +10,18 @@ package gui;
  * @author dinervoid
  */
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.EventQueue;
+import java.awt.GraphicsEnvironment;
+import java.awt.FontFormatException;
 import java.awt.Font;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.BoxLayout;
 import resources.Reference;
+import gameEngine.Canvas;
 
 
 public class MainWindow extends JFrame
@@ -24,9 +30,12 @@ public class MainWindow extends JFrame
     private CustomButton optionButton;
     private CustomButton quitButton;
     
+    private final Canvas gameCanvas;
+    
     public MainWindow()
     {
         initUI();
+        gameCanvas = new Canvas();
     }
     
     private void mainMenu()
@@ -83,10 +92,19 @@ public class MainWindow extends JFrame
         }
     }
     
+    private void play()
+    {
+        this.getContentPane().removeAll();
+        this.getContentPane().repaint();
+        
+        this.setSize(gameCanvas.getSize());
+        this.add(gameCanvas);
+    }
+    
     private void playButtonClick()
     {
         System.out.println("Play");
-        //play();
+        play();
     }
     
     private void optionButtonClick()

@@ -5,8 +5,11 @@
  */
 package gui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.SwingConstants;
 import resources.LoadImageResource;
 
 /**
@@ -33,7 +36,6 @@ public class CustomButton extends JButton
      @Override
     public Dimension getPreferredSize()
     {
-        Dimension size = super.getPreferredSize();
-        return size;
+        return super.getPreferredSize();
     }
 }
