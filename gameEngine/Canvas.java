@@ -48,13 +48,20 @@ public class Canvas extends JPanel implements Runnable
             });
         
         this.game = new GameLoop();
+        
+ 
+        this.initCanvas();
+    }
+    
+    private void initCanvas()
+    {
         this.setBackground(Color.black);
         this.setSize(1080, 720);
         this.game.getPlayer().resizeTexture(0.5);
         this.game.getPlayer().setXPos(400);
         this.game.getPlayer().setYPos(300);
         this.repaint();
- 
+        
         if(animator == null)
         {
             this.animator = new Thread(this);
