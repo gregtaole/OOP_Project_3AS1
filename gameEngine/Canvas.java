@@ -32,21 +32,17 @@ public class Canvas extends JPanel implements Runnable
         ingame = true;
         DELAY = 17;
         
-        this.setFocusable(true);
-        this.requestFocusInWindow();
         this.addKeyListener(new KeyAdapter()
             {
                 @Override
                 public void keyReleased(KeyEvent e)
                 {
-                    System.out.println("Key released.");
                     game.getPlayer().keyReleased(e);
                 }
 
                 @Override
                 public void keyPressed(KeyEvent e)
                 {
-                    System.out.println("Key pressed.");
                     game.getPlayer().keyPressed(e);
                 }
             });
@@ -105,9 +101,12 @@ public class Canvas extends JPanel implements Runnable
 
             if (sleep < 0) 
                 sleep = 2;
-            try {
+            try
+            {
                 Thread.sleep(sleep);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 System.out.println("interrupted");
             }
             beforeTime = System.currentTimeMillis();

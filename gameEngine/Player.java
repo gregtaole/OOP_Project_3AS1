@@ -33,12 +33,12 @@ public class Player extends  Spaceship
     {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_Q)
+        if (key == KeyEvent.VK_LEFT)
         {
             dx = -10;
         }
 
-        if (key == KeyEvent.VK_D)
+        if (key == KeyEvent.VK_RIGHT)
         {
             dx = 10;
         }
@@ -48,12 +48,12 @@ public class Player extends  Spaceship
     {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_Q)
+        if (key == KeyEvent.VK_LEFT)
         {
             dx = 0;
         }
 
-        if (key == KeyEvent.VK_D)
+        if (key == KeyEvent.VK_RIGHT)
         {
             dx = 0;
         }

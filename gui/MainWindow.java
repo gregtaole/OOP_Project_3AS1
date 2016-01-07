@@ -97,8 +97,9 @@ public class MainWindow extends JFrame
         
         gameCanvas = new Canvas();
         this.setSize(gameCanvas.getSize());
-        this.gameCanvas.requestFocusInWindow();
         this.getContentPane().add(gameCanvas);
+        this.gameCanvas.setFocusable(true);
+        this.gameCanvas.requestFocusInWindow();
     }
     
     private void playButtonClick()
