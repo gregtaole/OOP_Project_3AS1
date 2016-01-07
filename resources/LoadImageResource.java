@@ -32,16 +32,16 @@ public final class LoadImageResource
     
     private LoadImageResource()
     {
-        textureAtlas =loadImageAtlas(Reference.TEXTURE_ATLAS);
-        GUIAtlas = loadImageAtlas(Reference.GUI_ATLAS);
-        textureSheet = loadTextureFile(Reference.TEXTURE_SHEET);
-        GUISheet = loadTextureFile(Reference.GUI_SHEET);
+        textureAtlas =loadImageAtlas(TextureReference.TEXTURE_ATLAS);
+        GUIAtlas = loadImageAtlas(TextureReference.GUI_ATLAS);
+        textureSheet = loadTextureFile(TextureReference.TEXTURE_SHEET);
+        GUISheet = loadTextureFile(TextureReference.GUI_SHEET);
     }
 
     public static BufferedImage getTexture(String textureName)
     {
-        textureAtlas = loadImageAtlas(Reference.TEXTURE_ATLAS);
-        textureSheet = loadTextureFile(Reference.TEXTURE_SHEET);
+        textureAtlas = loadImageAtlas(TextureReference.TEXTURE_ATLAS);
+        textureSheet = loadTextureFile(TextureReference.TEXTURE_SHEET);
         Element textureElement;
         for(int i = 0 ; i < textureAtlas.getLength() ; ++i)
         {
@@ -61,8 +61,8 @@ public final class LoadImageResource
     
     public static BufferedImage getGUIElement(String elementName)
     {
-        GUIAtlas = loadImageAtlas(Reference.GUI_ATLAS);
-        GUISheet = loadTextureFile(Reference.GUI_SHEET);
+        GUIAtlas = loadImageAtlas(TextureReference.GUI_ATLAS);
+        GUISheet = loadTextureFile(TextureReference.GUI_SHEET);
         Element textureElement;
         for(int i = 0 ; i < GUIAtlas.getLength() ; ++i)
         {

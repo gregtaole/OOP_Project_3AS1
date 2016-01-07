@@ -20,10 +20,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import javax.swing.JFrame;
 import javax.swing.BoxLayout;
-import resources.Reference;
+
+import resources.TextureReference;
 import gameEngine.Canvas;
 
-public class MainWindow extends JFrame
+public class MainWindow extends JFrame implements TextureReference
 {
     private CustomButton playButton;
     private CustomButton optionButton;
@@ -39,9 +40,9 @@ public class MainWindow extends JFrame
     
     private void mainMenu()
     {  
-        playButton = new CustomButton("New Game", "buttonBlue.png");
-        optionButton = new CustomButton("Options",  "buttonBlue.png");
-        quitButton = new CustomButton("Quit", "buttonBlue.png");
+        playButton = new CustomButton("New Game", BLUE_BUTTON);
+        optionButton = new CustomButton("Options",  BLUE_BUTTON);
+        quitButton = new CustomButton("Quit", BLUE_BUTTON);
         
         playButton.addActionListener(e->playButtonClick());
         optionButton.addActionListener(e->optionButtonClick());
@@ -65,7 +66,7 @@ public class MainWindow extends JFrame
         
         try
         {
-            InputStream fontStream = getClass().getResourceAsStream(Reference.FONT);
+            InputStream fontStream = getClass().getResourceAsStream(TextureReference.FONT);
             Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             font = font.deriveFont(Font.PLAIN, 14);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

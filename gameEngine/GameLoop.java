@@ -9,14 +9,19 @@ package gameEngine;
  *
  * @author dinervoid
  */
-public class GameLoop
+import java.util.ArrayList;
+
+import resources.TextureReference;
+
+public class GameLoop implements TextureReference
 {
     private Player player;
-    private Enemy[] enemies;
+    private ArrayList<Enemy> enemies;
     
     public GameLoop()
     {
-        this.player = new Player("playerShip1_blue.png");
+        this.player = new Player(PLAYER_TEXTURE);
+        this.enemies = new ArrayList();
     }
     
     public Player getPlayer()

@@ -17,10 +17,8 @@ import javax.swing.JPanel;
  *
  * @author dinervoid
  */
-public class Canvas extends JPanel implements Runnable
-{
-    private final int DELAY;
-    
+public class Canvas extends JPanel implements Runnable, GameConstants
+{  
     private final GameLoop game;
     private boolean ingame;
     private Thread animator;
@@ -30,7 +28,6 @@ public class Canvas extends JPanel implements Runnable
         super();
         
         ingame = true;
-        DELAY = 17;
         
         this.addKeyListener(new KeyAdapter()
             {

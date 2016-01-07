@@ -11,7 +11,7 @@ import java.awt.event.KeyEvent;
  *
  * @author dinervoid
  */
-public class Player extends  Spaceship
+public class Player extends  Spaceship implements GameConstants
 {
     private int healthPoints;
     private int dx;
@@ -19,7 +19,7 @@ public class Player extends  Spaceship
     public Player(String shipType)
     {
         super(shipType);
-        this.healthPoints = 3;
+        this.healthPoints = PLAYER_HEALTH;
         dx = 0;
     }
             
@@ -35,12 +35,12 @@ public class Player extends  Spaceship
 
         if (key == KeyEvent.VK_LEFT)
         {
-            dx = -10;
+            dx = -PLAYER_SPEED;
         }
 
         if (key == KeyEvent.VK_RIGHT)
         {
-            dx = 10;
+            dx = PLAYER_SPEED;
         }
     }
 
