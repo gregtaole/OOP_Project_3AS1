@@ -23,23 +23,22 @@ import javax.swing.BoxLayout;
 import resources.Reference;
 import gameEngine.Canvas;
 
-
 public class MainWindow extends JFrame
 {
     private CustomButton playButton;
     private CustomButton optionButton;
     private CustomButton quitButton;
     
-    private final Canvas gameCanvas;
+    private Canvas gameCanvas;
     
     public MainWindow()
     {
+        super();
         initUI();
-        gameCanvas = new Canvas();
     }
     
     private void mainMenu()
-    {
+    {  
         playButton = new CustomButton("New Game", "buttonBlue.png");
         optionButton = new CustomButton("Options",  "buttonBlue.png");
         quitButton = new CustomButton("Quit", "buttonBlue.png");
@@ -51,8 +50,7 @@ public class MainWindow extends JFrame
         this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
         this.add(playButton);
         this.add(optionButton);
-        this.add(quitButton);
-        
+        this.add(quitButton);       
     }
     
     private void initUI()
@@ -97,8 +95,10 @@ public class MainWindow extends JFrame
         this.getContentPane().removeAll();
         this.getContentPane().repaint();
         
+        gameCanvas = new Canvas();
         this.setSize(gameCanvas.getSize());
-        this.add(gameCanvas);
+        this.gameCanvas.requestFocusInWindow();
+        this.getContentPane().add(gameCanvas);
     }
     
     private void playButtonClick()

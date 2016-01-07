@@ -12,11 +12,13 @@ package gameEngine;
 public class Spaceship extends SpriteObject
 {
     private boolean destroyed;
+    private int speed;
     
     public Spaceship(String shipType)
     {
         super(shipType);
-        destroyed = false;
+        this.destroyed = false;
+        this.speed = 10;
     }
     
     public boolean getDestroyed()
@@ -29,18 +31,23 @@ public class Spaceship extends SpriteObject
         this.destroyed = newStatus;
     }
     
-    public void moveLeft()
+    public void move()
     {
-        
-    }
-    
-    public void moveRight()
-    {
-        
+        this.xPos += this.speed;
     }
     
     public void shoot()
     {
         
+    }
+    
+    public int getSpeed()
+    {
+        return this.speed;
+    }
+    
+    public void setSpeed(int newSpeed)
+    {
+        this.speed = newSpeed;
     }
 }

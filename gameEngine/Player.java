@@ -5,6 +5,8 @@
  */
 package gameEngine;
 
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author dinervoid
@@ -12,20 +14,68 @@ package gameEngine;
 public class Player extends  Spaceship
 {
     private int healthPoints;
+    private int dx;
     
     public Player(String shipType)
     {
         super(shipType);
         this.healthPoints = 3;
+        dx = 0;
     }
             
+    @Override
+    public void move()
+    {
+        this.xPos += dx;
+    }
+    
+    public void keyPressed(KeyEvent e)
+    {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_Q)
+        {
+            dx = -10;
+        }
+
+        if (key == KeyEvent.VK_D)
+        {
+            dx = 10;
+        }
+    }
+
+    public void keyReleased(KeyEvent e)
+    {
+        int key = e.getKeyCode();
+
+        if (key == KeyEvent.VK_Q)
+        {
+            dx = 0;
+        }
+
+        if (key == KeyEvent.VK_D)
+        {
+            dx = 0;
+        }
+    }
+
     public int getHealthPoints()
     {
         return this.healthPoints;
     }
     
+    public int getDx()
+    {
+        return this.dx;
+    }
+    
     public void setHealthPoints(int newHealth)
     {
         this.healthPoints = newHealth;
+    }
+    
+    public void setDx(int newDx)
+    {
+        this.dx = newDx;
     }
 }
