@@ -11,6 +11,8 @@ package gameEngine;
  */
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
 public class SpriteObject
@@ -19,6 +21,7 @@ public class SpriteObject
     protected int yPos;
     private int width;
     private int height;
+    private boolean isVisible;
     private BufferedImage texture;
     
     public SpriteObject(String spriteName)
@@ -28,6 +31,7 @@ public class SpriteObject
         this.height = texture.getHeight();
         this.xPos = 0;
         this.yPos = 0;
+        this.isVisible = false;
     }
     
     public void resizeTexture(double scale)
@@ -41,8 +45,29 @@ public class SpriteObject
         Graphics2D g2d = texture.createGraphics();
         g2d.drawImage(tmp, 0, 0, null);
         g2d.dispose();
+
+        this.width = texture.getWidth();
+        this.height = texture.getHeight();
     }
-    
+
+    public void flipSprite(boolean axis)
+    {
+        if(axis)//Flip vertically
+        {
+            AffineTransform tx = AffineTransform.getScaleInstance(1, -1);
+            tx.translate(0, -texture.getHeight(null));
+            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            texture = op.filter(texture, null);
+        }
+        else//Flip horizontally
+        {
+            AffineTransform tx = AffineTransform.getScaleInstance(-1, 1);
+            tx.translate(-texture.getWidth(null), 0);
+            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+            texture = op.filter(texture, null);
+        }
+    }
+
     public int getXPos()
     {
         return this.xPos;
@@ -62,7 +87,12 @@ public class SpriteObject
     {
         return this.height;
     }
-    
+
+    public boolean getVisible()
+    {
+        return this.isVisible;
+    }
+
     public BufferedImage getTexture()
     {
         return this.texture;
@@ -86,5 +116,10 @@ public class SpriteObject
     public void setHeight(int newHeight)
     {
         this.height = newHeight;
+    }
+
+    public void setVisible(boolean visibility)
+    {
+        this.isVisible = visibility;
     }
 }

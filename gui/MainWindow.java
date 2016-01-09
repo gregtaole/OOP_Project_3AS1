@@ -97,8 +97,9 @@ public class MainWindow extends JFrame implements TextureReference
         this.getContentPane().repaint();
         
         gameCanvas = new Canvas();
-        this.setSize(gameCanvas.getSize());
         this.getContentPane().add(gameCanvas);
+        this.getContentPane().setPreferredSize(gameCanvas.getSize());
+        this.pack();
         this.gameCanvas.setFocusable(true);
         this.gameCanvas.requestFocusInWindow();
     }

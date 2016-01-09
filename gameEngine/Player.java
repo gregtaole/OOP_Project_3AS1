@@ -20,13 +20,24 @@ public class Player extends  Spaceship implements GameConstants
     {
         super(shipType);
         this.healthPoints = PLAYER_HEALTH;
+        this.xPos = PLAYER_START_X_POS;
+        this.yPos = PLAYER_START_Y_POS;
+        this.resizeTexture(0.5);
         dx = 0;
     }
-            
-    @Override
+
     public void move()
     {
         this.xPos += dx;
+
+        if(xPos >= WINDOW_WIDTH - 2 * getWidth())
+        {
+            this.xPos = WINDOW_WIDTH - 2 * getWidth();
+        }
+        else if(xPos <= getWidth())
+        {
+            this.xPos = getWidth();
+        }
     }
     
     public void keyPressed(KeyEvent e)

@@ -7,10 +7,10 @@ package gameEngine;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
 import javax.swing.JPanel;
 
 /**
@@ -53,12 +53,9 @@ public class Canvas extends JPanel implements Runnable, GameConstants
     private void initCanvas()
     {
         this.setBackground(Color.black);
-        this.setSize(1080, 720);
-        this.game.getPlayer().resizeTexture(0.5);
-        this.game.getPlayer().setXPos(400);
-        this.game.getPlayer().setYPos(300);
+        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         this.repaint();
-        
+
         if(animator == null)
         {
             this.animator = new Thread(this);
@@ -69,18 +66,34 @@ public class Canvas extends JPanel implements Runnable, GameConstants
     }
     
     @Override
-    public void paintComponent(Graphics g)
+    public void paint(Graphics g)
     {
-        super.paintComponent(g);
+        super.paint(g);
         
         drawPlayer(g);
+        drawEnemies(g);
+
+        g.drawImage(this.game.getTestLaser().getTexture(), this.game.getTestLaser().getXPos(), this.game.getTestLaser().getYPos(), this);
+
+        Toolkit.getDefaultToolkit().sync();
+        g.dispose();
     }
     
     private void drawPlayer(Graphics g)
     {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.drawImage(this.game.getPlayer().getTexture(), this.game.getPlayer().getXPos(), this.game.getPlayer().getYPos(), this);
-        Toolkit.getDefaultToolkit().sync();
+       g.drawImage(this.game.getPlayer().getTexture(), this.game.getPlayer().getXPos(), this.game.getPlayer().getYPos(), this);
+    }
+
+    private void drawEnemies(Graphics g)
+    {
+        Iterator it = this.game.getEnemies().iterator();
+
+
+        while(it.hasNext())
+        {
+            Enemy tmp = (Enemy)it.next();
+            g.drawImage(tmp.getTexture(), tmp.getXPos(), tmp.getYPos(), this);
+        }
     }
 
     public void animationCycle()

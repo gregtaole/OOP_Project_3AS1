@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
  *
  * @author dinervoid
  */
-public final class LoadImageResource
+public final class LoadImageResource implements TextureReference
 {
     private static NodeList textureAtlas;
     private static NodeList GUIAtlas ;

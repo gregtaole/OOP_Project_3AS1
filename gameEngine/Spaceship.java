@@ -30,12 +30,7 @@ public class Spaceship extends SpriteObject
     {
         this.destroyed = newStatus;
     }
-    
-    public void move()
-    {
-        this.xPos += this.speed;
-    }
-    
+
     public void shoot()
     {
         
