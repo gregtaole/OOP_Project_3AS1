@@ -9,19 +9,21 @@ package gameEngine;
  *
  * @author dinervoid
  */
-import java.awt.Graphics2D;
-import java.awt.Image;
+import resources.TextureReference;
+
+import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-public class SpriteObject
+public class SpriteObject implements GameConstants, TextureReference
 {
     protected int xPos;
     protected int yPos;
     private int width;
     private int height;
     private boolean isVisible;
+    private boolean isDestroyed;
     private BufferedImage texture;
     
     public SpriteObject(String spriteName)
@@ -68,6 +70,11 @@ public class SpriteObject
         }
     }
 
+    public Rectangle getBounds()
+    {
+        return new Rectangle(this.xPos, this.yPos, this.width, this.height);
+    }
+
     public int getXPos()
     {
         return this.xPos;
@@ -97,29 +104,46 @@ public class SpriteObject
     {
         return this.texture;
     }
-    
+
+    public boolean isDestroyed()
+    {
+        return isDestroyed;
+    }
+
     public void setXPos(int newPos)
     {
         this.xPos = newPos;
     }
-    
+
     public void setYPos(int newPos)
     {
         this.yPos = newPos;
     }
-    
+
     public void setWidth(int newWidth)
     {
         this.width = newWidth;
     }
-    
+
     public void setHeight(int newHeight)
     {
         this.height = newHeight;
     }
 
+    public void setTexture(String newTexture)
+    {
+        this.texture = resources.LoadImageResource.getTexture(newTexture);
+    }
+
     public void setVisible(boolean visibility)
     {
         this.isVisible = visibility;
+    }
+
+    public void setDestroyed(boolean destroyed)
+    {
+        isDestroyed = destroyed;
+        if(destroyed)
+            this.setVisible(false);
     }
 }

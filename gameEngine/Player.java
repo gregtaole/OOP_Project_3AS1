@@ -11,14 +11,17 @@ import java.awt.event.KeyEvent;
  *
  * @author dinervoid
  */
-public class Player extends  Spaceship implements GameConstants
+public class Player extends  Spaceship
 {
     private int healthPoints;
     private int dx;
+    private Laser shot;
     
     public Player(String shipType)
     {
         super(shipType);
+        this.speed = PLAYER_SPEED;
+        this.shot = new Laser(PLAYER_LASER_TEXTURE);
         this.healthPoints = PLAYER_HEALTH;
         this.xPos = PLAYER_START_X_POS;
         this.yPos = PLAYER_START_Y_POS;
@@ -39,19 +42,35 @@ public class Player extends  Spaceship implements GameConstants
             this.xPos = getWidth();
         }
     }
+
+    public void shoot()
+    {
+        if(!shot.getVisible())
+        {
+            shot.setXPos(this.xPos + this.getWidth() / 2);
+            shot.setYPos(this.yPos);
+            shot.setVisible(true);
+            shot.setDestroyed(false);
+        }
+    }
     
     public void keyPressed(KeyEvent e)
     {
         int key = e.getKeyCode();
 
-        if (key == KeyEvent.VK_LEFT)
+        if(key == KeyEvent.VK_LEFT)
         {
-            dx = -PLAYER_SPEED;
+            dx = -this.speed;
         }
 
-        if (key == KeyEvent.VK_RIGHT)
+        if(key == KeyEvent.VK_RIGHT)
         {
-            dx = PLAYER_SPEED;
+            dx = this.speed;
+        }
+
+        if(key == KeyEvent.VK_SPACE)
+        {
+            this.shoot();
         }
     }
 
@@ -78,6 +97,11 @@ public class Player extends  Spaceship implements GameConstants
     public int getDx()
     {
         return this.dx;
+    }
+
+    public Laser getShot()
+    {
+        return this.shot;
     }
     
     public void setHealthPoints(int newHealth)

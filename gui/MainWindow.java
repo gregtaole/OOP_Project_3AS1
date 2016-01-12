@@ -102,6 +102,8 @@ public class MainWindow extends JFrame implements TextureReference
         this.pack();
         this.gameCanvas.setFocusable(true);
         this.gameCanvas.requestFocusInWindow();
+        if(this.gameCanvas.getAnimator().getState() == Thread.State.TERMINATED)
+            this.mainMenu();
     }
     
     private void playButtonClick()

@@ -5,21 +5,27 @@
  */
 package gameEngine;
 
+
+import java.awt.Rectangle;
+
 /**
  *
  * @author dinervoid
  */
-public class Enemy  extends Spaceship implements GameConstants
+public class Enemy  extends Spaceship
 {
-    private int xSpeed;
     private int ySpeed;
+    private Laser shot;
+
 
     public Enemy(String shipType)
     {
         super(shipType);
         this.resizeTexture(0.5);
-        this.xSpeed = ENEMY_BASE_X_SPEED;
-        this.ySpeed = ENEMY_BASE_Y_SPEED;
+        this.speed = ENEMY_BASE_X_SPEED;
+        this.ySpeed = this.getHeight();
+        this.shot = new Laser(ENEMY_LASER_TEXTURE);
+        this.shot.flipSprite(true);
     }
 
     /**
@@ -30,19 +36,43 @@ public class Enemy  extends Spaceship implements GameConstants
     public void moveX(boolean direction)
     {
         if(direction)
-            this.xPos -= xSpeed;
+            this.xPos -= this.speed;
         else
-            this.yPos += ySpeed;
+            this.xPos += this.speed;
     }
 
     public void moveY()
     {
-        this.yPos += ySpeed;
+        this.yPos += this.ySpeed;
     }
 
-    public void accelerate(double scale)
+    public void accelerate(double rate)
     {
-        xSpeed = (int) (scale * xSpeed);
-        ySpeed = (int) (scale * ySpeed);
+        this.speed = (int)(this.speed * rate);
+    }
+
+    public void shoot()
+    {
+        if(!this.shot.getVisible())
+        {
+            shot.setXPos(this.xPos + this.getWidth() / 2);
+            shot.setYPos(this.yPos + this.getHeight());
+            shot.setVisible(true);
+            shot.setDestroyed(false);
+        }
+    }
+
+    public Laser getShot()
+    {
+        return this.shot;
+    }
+
+    @Override
+    public Rectangle getBounds()
+    {
+        if(isDestroyed())
+            return new Rectangle(0, 0, 0, 0);
+        else
+            return super.getBounds();
     }
 }

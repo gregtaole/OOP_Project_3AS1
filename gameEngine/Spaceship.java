@@ -11,31 +11,14 @@ package gameEngine;
  */
 public class Spaceship extends SpriteObject
 {
-    private boolean destroyed;
-    private int speed;
+    protected int speed;
     
     public Spaceship(String shipType)
     {
         super(shipType);
-        this.destroyed = false;
         this.speed = 10;
     }
-    
-    public boolean getDestroyed()
-    {
-        return this.destroyed;
-    }
-    
-    public void setDestroyed(boolean newStatus)
-    {
-        this.destroyed = newStatus;
-    }
 
-    public void shoot()
-    {
-        
-    }
-    
     public int getSpeed()
     {
         return this.speed;
