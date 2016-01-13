@@ -6,6 +6,8 @@
 package gameEngine;
 
 import resources.TextureReference;
+
+import java.awt.AWTEvent;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
@@ -17,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Random;
 import javax.swing.JPanel;
 
 /**
@@ -35,6 +36,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
     private int rand;
     private Thread animator;
     private Font font;
+    private ArrayList<GameOverListener> gameOverListeners = new ArrayList<GameOverListener>();
 
     public Canvas()
     {
@@ -278,10 +280,21 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
         enemyBombing();
     }
 
-    public void gameOver()
+    public void processGameOverEvent(GameOverEvent event)
     {
-        this.removeAll();
+        ArrayList<GameOverListener> tempGameOverListeners;
 
+        synchronized(this)
+        {
+            if(gameOverListeners.size() == 0)
+                return;
+            tempGameOverListeners = (ArrayList<GameOverListener>) gameOverListeners.clone();
+        }
+
+        for(GameOverListener listener : tempGameOverListeners)
+        {
+            listener.gameOverReceived(event);
+        }
     }
 
 
@@ -312,11 +325,14 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
             }
             beforeTime = System.currentTimeMillis();
         }
-        gameOver();
+        processGameOverEvent(new GameOverEvent(this, AWTEvent.RESERVED_ID_MAX + 1, !ingame, score));
     }
 
-    public Thread getAnimator()
+    public synchronized void addGameOverListener(GameOverListener listener)
     {
-        return this.animator;
+        if(!gameOverListeners.contains(listener))
+        {
+            gameOverListeners.add(listener);
+        }
     }
 }
