@@ -93,11 +93,6 @@ public class Player extends  Spaceship
     {
         return this.healthPoints;
     }
-    
-    public int getDx()
-    {
-        return this.dx;
-    }
 
     public Laser getShot()
     {
@@ -107,10 +102,5 @@ public class Player extends  Spaceship
     public void setHealthPoints(int newHealth)
     {
         this.healthPoints = newHealth;
-    }
-    
-    public void setDx(int newDx)
-    {
-        this.dx = newDx;
     }
 }

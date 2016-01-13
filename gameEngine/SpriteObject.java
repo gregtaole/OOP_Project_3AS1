@@ -120,21 +120,6 @@ public class SpriteObject implements GameConstants, TextureReference
         this.yPos = newPos;
     }
 
-    public void setWidth(int newWidth)
-    {
-        this.width = newWidth;
-    }
-
-    public void setHeight(int newHeight)
-    {
-        this.height = newHeight;
-    }
-
-    public void setTexture(String newTexture)
-    {
-        this.texture = resources.LoadImageResource.getTexture(newTexture);
-    }
-
     public void setVisible(boolean visibility)
     {
         this.isVisible = visibility;

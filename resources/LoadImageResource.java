@@ -108,8 +108,7 @@ public final class LoadImageResource implements TextureReference
         }
         if(document != null)
         {
-            NodeList resourceList = document.getElementsByTagName("SubTexture");
-            return resourceList;
+            return document.getElementsByTagName("SubTexture");
         }
         return null;
     }

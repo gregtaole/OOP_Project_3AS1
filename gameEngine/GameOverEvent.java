@@ -8,19 +8,12 @@ import java.awt.AWTEvent;
 
 public class GameOverEvent extends AWTEvent
 {
-    private boolean gameOver;
     private int score;
 
-    public GameOverEvent(Object o, int i, boolean gameOver, int score)
+    public GameOverEvent(Object o, int i, int score)
     {
         super(o, i);
-        this.gameOver = gameOver;
         this.score = score;
-    }
-
-    public boolean isGameOver()
-    {
-        return gameOver;
     }
 
     public int getScore()

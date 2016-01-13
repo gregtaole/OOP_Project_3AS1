@@ -12,9 +12,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -30,23 +33,36 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
     private Player player;
     private ArrayList<Enemy> enemies;
     private boolean alienDirection;
-    private boolean ingame;
+    private boolean inGame;
     private int nbKill;
     private int score;
     private int rand;
     private Thread animator;
     private Font font;
-    private ArrayList<GameOverListener> gameOverListeners = new ArrayList<GameOverListener>();
+    private ArrayList<GameOverListener> gameOverListeners = new ArrayList<>();
+    private BufferedImage playerHealth;
 
     public Canvas()
     {
         super();
 
-        ingame = true;
+        inGame = true;
         alienDirection = true;
         nbKill = 0;
         score = 0;
         rand = 42;
+        playerHealth = resources.LoadImageResource.getTexture(PLAYER_HEALTH_TEXTURE);
+
+        //Resize playerHealth to half its size
+        int newWidth = (int) (0.5 * playerHealth.getWidth());
+        int newHeight = (int) (0.5 * playerHealth.getHeight());
+
+        Image tmp = this.playerHealth.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+        playerHealth = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g2d = playerHealth.createGraphics();
+        g2d.drawImage(tmp, 0, 0, null);
+        g2d.dispose();
 
         try
         {
@@ -54,11 +70,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
             font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             font = font.deriveFont(Font.PLAIN, 10);
         }
-        catch(FontFormatException e)
-        {
-            e.printStackTrace();
-        }
-        catch(IOException e)
+        catch(FontFormatException | IOException e)
         {
             e.printStackTrace();
         }
@@ -101,7 +113,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
     private void resetEnemies()
     {
-        this.enemies = new ArrayList();
+        this.enemies = new ArrayList<>();
         for(int j = 0 ; j < ENEMY_COL ; ++j)
         {
             for(int i = 0 ; i < ENEMY_ROW ; ++i)
@@ -112,6 +124,32 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
                 tmp.setYPos(42 + i * (tmp.getHeight() + 10));
                 enemies.add(tmp);
             }
+        }
+    }
+
+    private void drawPlayer(Graphics g)
+    {
+        g.drawImage(this.player.getTexture(), this.player.getXPos(), this.player.getYPos(), this);
+        if(this.player.getShot().getVisible())
+        {
+            g.drawImage(this.player.getShot().getTexture(), this.player.getShot().getXPos(), this.player.getShot().getYPos(), this);
+        }
+
+        g.drawString("Lives : ", 850, 715);
+        for(int i = 0; i < player.getHealthPoints(); ++i)
+        {
+            g.drawImage(playerHealth, 900 + (playerHealth.getWidth() + 10) * i, 710 - playerHealth.getHeight() / 2, this);
+        }
+    }
+
+    private void drawEnemies(Graphics g)
+    {
+        for(Enemy tmp : this.enemies)
+        {
+            if (!tmp.isDestroyed())
+                g.drawImage(tmp.getTexture(), tmp.getXPos(), tmp.getYPos(), this);
+            if (tmp.getShot().getVisible())
+                g.drawImage(tmp.getShot().getTexture(), tmp.getShot().getXPos(), tmp.getShot().getYPos(), this);
         }
     }
 
@@ -129,7 +167,6 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
                 {
                     tmp.setDestroyed(true);
                     tmp.setVisible(false);
-                    tmp.setTexture(ENEMY_DESTROYED_TEXTURE);
                     player.getShot().setDestroyed(true);
                     nbKill++;
                     score += ENEMY_SCORE;
@@ -150,10 +187,8 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
             if(x >= WINDOW_WIDTH - 2 * player.getWidth() && !alienDirection)
             {
                 alienDirection = true;
-                Iterator it = enemies.iterator();
-                while(it.hasNext())
+                for(Enemy tmp3 : enemies)
                 {
-                    Enemy tmp3 = (Enemy) it.next();
                     tmp3.moveY();
                     if(tmp3.getSpeed() <= 2 * ENEMY_BASE_X_SPEED)
                         tmp3.accelerate(1.5);
@@ -163,12 +198,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
             if(x <= player.getWidth() && alienDirection)
             {
                 alienDirection = false;
-                Iterator it = enemies.iterator();
-                while(it.hasNext())
-                {
-                    Enemy tmp3 = (Enemy) it.next();
-                    tmp3.moveY();
-                }
+                enemies.forEach(Enemy::moveY);
             }
         }
 
@@ -182,7 +212,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
                 if(y > GROUND_HEIGHT - toMove.getHeight())
                 {
-                    ingame = false;
+                    inGame = false;
                 }
                 toMove.moveX(alienDirection);
             }
@@ -191,10 +221,8 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
     private void enemyBombing()
     {
-        Iterator enemyIt = enemies.iterator();
-        while(enemyIt.hasNext())
+        for(Enemy tmp : enemies)
         {
-            Enemy tmp = (Enemy) enemyIt.next();
             rand = (int) (Math.random() * 1000);
             if(!tmp.getVisible() && rand == 42)
             {
@@ -208,9 +236,9 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
                     tmp.getShot().setDestroyed(true);
                     player.setHealthPoints(player.getHealthPoints() - 1);
                     if(player.getHealthPoints() == 0)
-                        ingame = false;
+                        inGame = false;
                 }
-                else if(tmp.getShot().getYPos() >= GROUND_HEIGHT)
+                else if (tmp.getShot().getYPos() >= GROUND_HEIGHT)
                 {
                     tmp.getShot().setDestroyed(true);
                 }
@@ -238,30 +266,6 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
         Toolkit.getDefaultToolkit().sync();
         g.dispose();
-    }
-    
-    private void drawPlayer(Graphics g)
-    {
-        g.drawImage(this.player.getTexture(), this.player.getXPos(), this.player.getYPos(), this);
-        if(this.player.getShot().getVisible())
-        {
-            g.drawImage(this.player.getShot().getTexture(), this.player.getShot().getXPos(), this.player.getShot().getYPos(), this);
-        }
-    }
-
-    private void drawEnemies(Graphics g)
-    {
-        Iterator it = this.enemies.iterator();
-
-
-        while(it.hasNext())
-        {
-            Enemy tmp = (Enemy)it.next();
-            if(!tmp.isDestroyed())
-                g.drawImage(tmp.getTexture(), tmp.getXPos(), tmp.getYPos(), this);
-            if(tmp.getShot().getVisible())
-                g.drawImage(tmp.getShot().getTexture(), tmp.getShot().getXPos(), tmp.getShot().getYPos(), this);
-        }
     }
 
     public void animationCycle()
@@ -305,7 +309,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
         beforeTime = System.currentTimeMillis();
 
-        while(ingame)
+        while(inGame)
         {
             repaint();
             animationCycle();
@@ -325,7 +329,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
             }
             beforeTime = System.currentTimeMillis();
         }
-        processGameOverEvent(new GameOverEvent(this, AWTEvent.RESERVED_ID_MAX + 1, !ingame, score));
+        processGameOverEvent(new GameOverEvent(this, AWTEvent.RESERVED_ID_MAX + 1, score));
     }
 
     public synchronized void addGameOverListener(GameOverListener listener)

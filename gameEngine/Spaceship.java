@@ -23,9 +23,4 @@ public class Spaceship extends SpriteObject
     {
         return this.speed;
     }
-    
-    public void setSpeed(int newSpeed)
-    {
-        this.speed = newSpeed;
-    }
 }

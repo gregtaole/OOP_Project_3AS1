@@ -24,19 +24,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 
-import gameEngine.GameOverEvent;
-import gameEngine.GameOverListener;
 import resources.TextureReference;
 import gameEngine.Canvas;
 
 public class MainWindow extends JFrame implements TextureReference
 {
-    private CustomButton playButton;
-    private CustomButton optionButton;
-    private CustomButton quitButton;
-    
-    private Canvas gameCanvas;
-
     private Font font;
 
     public MainWindow()
@@ -46,10 +38,10 @@ public class MainWindow extends JFrame implements TextureReference
     }
     
     private void mainMenu()
-    {  
-        playButton = new CustomButton("New Game", BLUE_BUTTON);
-        optionButton = new CustomButton("Options",  BLUE_BUTTON);
-        quitButton = new CustomButton("Quit", BLUE_BUTTON);
+    {
+        CustomButton playButton = new CustomButton("New Game", BLUE_BUTTON);
+        CustomButton optionButton = new CustomButton("Options",  BLUE_BUTTON);
+        CustomButton quitButton = new CustomButton("Quit", BLUE_BUTTON);
         
         playButton.addActionListener(e->playButtonClick());
         optionButton.addActionListener(e->optionButtonClick());
@@ -103,26 +95,21 @@ public class MainWindow extends JFrame implements TextureReference
         this.getContentPane().removeAll();
         this.getContentPane().repaint();
         
-        gameCanvas = new Canvas();
+        Canvas gameCanvas = new Canvas();
         this.getContentPane().add(gameCanvas);
         this.getContentPane().setPreferredSize(gameCanvas.getSize());
         this.pack();
-        this.gameCanvas.setFocusable(true);
-        this.gameCanvas.requestFocusInWindow();
+        gameCanvas.setFocusable(true);
+        gameCanvas.requestFocusInWindow();
 
-        this.gameCanvas.addGameOverListener(new GameOverListener()
-        {
-            @Override
-            public void gameOverReceived(GameOverEvent event)
-            {
-                System.out.println("GameOverEvent received!");
-                getContentPane().removeAll();
-                JPanel gameOverPanel = gameOverPanel(event.getScore());
-                getContentPane().add(gameOverPanel);
-                getContentPane().setPreferredSize(gameOverPanel.getPreferredSize());
-                getContentPane().repaint();
-                pack();
-            }
+        gameCanvas.addGameOverListener(event -> {
+            System.out.println("GameOverEvent received!");
+            getContentPane().removeAll();
+            JPanel gameOverPanel = gameOverPanel(event.getScore());
+            getContentPane().add(gameOverPanel);
+            getContentPane().setPreferredSize(gameOverPanel.getPreferredSize());
+            getContentPane().repaint();
+            pack();
         });
     }
 
