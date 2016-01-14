@@ -20,6 +20,7 @@ public interface GameConstants
     int ENEMY_NB = ENEMY_ROW * ENEMY_COL;
     int ENEMY_BASE_X_SPEED = 2;
     int ENEMY_SCORE = 500;
+    int ENEMY_BOMB_CHANCE = 2000;
 
     int PLAYER_START_X_POS = 515;
     int PLAYER_START_Y_POS = 670;
@@ -28,5 +29,5 @@ public interface GameConstants
 
     int LASER_SPEED = 8;
 
-    int DELAY = 17;
+    int DELAY = 24;//17
 }

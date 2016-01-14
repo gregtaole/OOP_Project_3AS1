@@ -9,14 +9,14 @@ package gameEngine;
  *
  * @author dinervoid
  */
-import resources.TextureReference;
+import resources.ResourceReference;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 
-public class SpriteObject implements GameConstants, TextureReference
+public class SpriteObject implements GameConstants, ResourceReference
 {
     protected int xPos;
     protected int yPos;

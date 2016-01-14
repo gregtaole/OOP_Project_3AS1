@@ -5,6 +5,8 @@
  */
 package gameEngine;
 
+import resources.SoundEffects;
+
 import java.awt.event.KeyEvent;
 
 /**
@@ -51,6 +53,8 @@ public class Player extends  Spaceship
             shot.setYPos(this.yPos);
             shot.setVisible(true);
             shot.setDestroyed(false);
+
+            SoundEffects.PLAYER_LASER.play();
         }
     }
     

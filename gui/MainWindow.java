@@ -19,22 +19,26 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
+import javax.sound.sampled.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 
-import resources.TextureReference;
+import resources.ResourceReference;
 import gameEngine.Canvas;
 
-public class MainWindow extends JFrame implements TextureReference
+@SuppressWarnings("serial")
+public class MainWindow extends JFrame implements ResourceReference
 {
     private Font font;
 
     public MainWindow()
     {
         super();
-        initUI();
+        this.initUI();
+        this.playBGM();
     }
     
     private void mainMenu()
@@ -54,7 +58,7 @@ public class MainWindow extends JFrame implements TextureReference
 
         try
         {
-            InputStream fontStream = getClass().getResourceAsStream(TextureReference.FONT);
+            InputStream fontStream = getClass().getResourceAsStream(ResourceReference.FONT);
             font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             font = font.deriveFont(Font.PLAIN, 14);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -141,6 +145,23 @@ public class MainWindow extends JFrame implements TextureReference
         changeFont(panel, font);
 
         return panel;
+    }
+
+    public void playBGM()
+    {
+        try
+        {
+            URL url = this.getClass().getResource("/resources/sound/bgm.wav");
+            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(url);
+            System.out.println(audioInputStream.getFormat());
+            Clip bgmClip = AudioSystem.getClip();
+            bgmClip.open(audioInputStream);
+            bgmClip.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        catch(LineUnavailableException | IOException | UnsupportedAudioFileException e)
+        {
+            e.printStackTrace();
+        }
     }
     
     private void playButtonClick()

@@ -6,6 +6,7 @@ import java.awt.AWTEvent;
  * Created by dinervoid on 1/13/16.
  */
 
+@SuppressWarnings("serial")
 public class GameOverEvent extends AWTEvent
 {
     private int score;

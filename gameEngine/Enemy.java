@@ -6,6 +6,8 @@
 package gameEngine;
 
 
+import resources.SoundEffects;
+
 import java.awt.Rectangle;
 
 /**
@@ -59,6 +61,8 @@ public class Enemy  extends Spaceship
             shot.setYPos(this.yPos + this.getHeight());
             shot.setVisible(true);
             shot.setDestroyed(false);
+
+            SoundEffects.ENEMY_LASER.play();
         }
     }
 

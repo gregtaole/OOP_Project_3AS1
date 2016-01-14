@@ -5,7 +5,8 @@
  */
 package gameEngine;
 
-import resources.TextureReference;
+import resources.ResourceReference;
+import resources.SoundEffects;
 
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -28,7 +29,9 @@ import javax.swing.JPanel;
  *
  * @author dinervoid
  */
-public class Canvas extends JPanel implements Runnable, GameConstants, TextureReference
+
+@SuppressWarnings("serial")
+public class Canvas extends JPanel implements Runnable, GameConstants, ResourceReference
 {
     private Player player;
     private ArrayList<Enemy> enemies;
@@ -66,7 +69,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
         try
         {
-            InputStream fontStream = getClass().getResourceAsStream(TextureReference.FONT);
+            InputStream fontStream = getClass().getResourceAsStream(ResourceReference.FONT);
             font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             font = font.deriveFont(Font.PLAIN, 10);
         }
@@ -155,19 +158,20 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
     private void checkCollisions()
     {
-        Iterator enemyIt;
+        Iterator<Enemy> enemyIt;
         if(player.getShot().getVisible())
         {
             enemyIt = enemies.iterator();
 
             while(enemyIt.hasNext())
             {
-                Enemy tmp = (Enemy) enemyIt.next();
+                Enemy tmp = enemyIt.next();
                 if(tmp.getBounds().intersects(player.getShot().getBounds()))
                 {
                     tmp.setDestroyed(true);
                     tmp.setVisible(false);
                     player.getShot().setDestroyed(true);
+                    SoundEffects.ENEMY_EXPLOSION.play();
                     nbKill++;
                     score += ENEMY_SCORE;
                 }
@@ -178,10 +182,10 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
 
     private void moveEnemies()
     {
-        Iterator enemyIt = enemies.iterator();
+        Iterator<Enemy> enemyIt = enemies.iterator();
         while(enemyIt.hasNext())
         {
-            Enemy tmp2 = (Enemy) enemyIt.next();
+            Enemy tmp2 = enemyIt.next();
             int x = tmp2.getXPos();
 
             if(x >= WINDOW_WIDTH - 2 * player.getWidth() && !alienDirection)
@@ -205,7 +209,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
         enemyIt = enemies.iterator();
         while(enemyIt.hasNext())
         {
-            Enemy toMove = (Enemy) enemyIt.next();
+            Enemy toMove = enemyIt.next();
             if(!toMove.isDestroyed())
             {
                 int y = toMove.getYPos();
@@ -223,7 +227,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
     {
         for(Enemy tmp : enemies)
         {
-            rand = (int) (Math.random() * 1000);
+            rand = (int) (Math.random() * ENEMY_BOMB_CHANCE);
             if(!tmp.getVisible() && rand == 42)
             {
                 tmp.shoot();
@@ -236,7 +240,10 @@ public class Canvas extends JPanel implements Runnable, GameConstants, TextureRe
                     tmp.getShot().setDestroyed(true);
                     player.setHealthPoints(player.getHealthPoints() - 1);
                     if(player.getHealthPoints() == 0)
+                    {
+                        SoundEffects.PLAYER_EXPLOSION.play();
                         inGame = false;
+                    }
                 }
                 else if (tmp.getShot().getYPos() >= GROUND_HEIGHT)
                 {

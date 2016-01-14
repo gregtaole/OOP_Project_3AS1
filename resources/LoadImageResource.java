@@ -22,7 +22,7 @@ import org.xml.sax.SAXException;
  *
  * @author dinervoid
  */
-public final class LoadImageResource implements TextureReference
+public final class LoadImageResource implements ResourceReference
 {
     private static NodeList textureAtlas;
     private static NodeList GUIAtlas ;
@@ -32,16 +32,16 @@ public final class LoadImageResource implements TextureReference
     
     private LoadImageResource()
     {
-        textureAtlas =loadImageAtlas(TextureReference.TEXTURE_ATLAS);
-        GUIAtlas = loadImageAtlas(TextureReference.GUI_ATLAS);
-        textureSheet = loadTextureFile(TextureReference.TEXTURE_SHEET);
-        GUISheet = loadTextureFile(TextureReference.GUI_SHEET);
+        textureAtlas =loadImageAtlas(ResourceReference.TEXTURE_ATLAS);
+        GUIAtlas = loadImageAtlas(ResourceReference.GUI_ATLAS);
+        textureSheet = loadTextureFile(ResourceReference.TEXTURE_SHEET);
+        GUISheet = loadTextureFile(ResourceReference.GUI_SHEET);
     }
 
     public static BufferedImage getTexture(String textureName)
     {
-        textureAtlas = loadImageAtlas(TextureReference.TEXTURE_ATLAS);
-        textureSheet = loadTextureFile(TextureReference.TEXTURE_SHEET);
+        textureAtlas = loadImageAtlas(ResourceReference.TEXTURE_ATLAS);
+        textureSheet = loadTextureFile(ResourceReference.TEXTURE_SHEET);
         Element textureElement;
         for(int i = 0 ; i < textureAtlas.getLength() ; ++i)
         {
@@ -61,8 +61,8 @@ public final class LoadImageResource implements TextureReference
     
     public static BufferedImage getGUIElement(String elementName)
     {
-        GUIAtlas = loadImageAtlas(TextureReference.GUI_ATLAS);
-        GUISheet = loadTextureFile(TextureReference.GUI_SHEET);
+        GUIAtlas = loadImageAtlas(ResourceReference.GUI_ATLAS);
+        GUISheet = loadTextureFile(ResourceReference.GUI_SHEET);
         Element textureElement;
         for(int i = 0 ; i < GUIAtlas.getLength() ; ++i)
         {

@@ -16,6 +16,8 @@ import resources.LoadImageResource;
  *
  * @author dinervoid
  */
+
+@SuppressWarnings("serial")
 public class CustomButton extends JButton
 {
     public CustomButton(String label, String type)
