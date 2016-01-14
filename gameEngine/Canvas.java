@@ -31,7 +31,7 @@ import javax.swing.JPanel;
  */
 
 @SuppressWarnings("serial")
-public class Canvas extends JPanel implements Runnable, GameConstants, ResourceReference
+public class Canvas extends JPanel implements Runnable
 {
     private Player player;
     private ArrayList<Enemy> enemies;
@@ -54,7 +54,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
         nbKill = 0;
         score = 0;
         rand = 42;
-        playerHealth = resources.LoadImageResource.getTexture(PLAYER_HEALTH_TEXTURE);
+        playerHealth = resources.LoadImageResource.getTexture(ResourceReference.PLAYER_HEALTH_TEXTURE);
 
         //Resize playerHealth to half its size
         int newWidth = (int) (0.5 * playerHealth.getWidth());
@@ -78,7 +78,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
             e.printStackTrace();
         }
 
-        this.player = new Player(PLAYER_TEXTURE);
+        this.player = new Player(ResourceReference.PLAYER_TEXTURE);
         resetEnemies();
 
         this.addKeyListener(new KeyAdapter()
@@ -102,7 +102,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
     private void initCanvas()
     {
         this.setBackground(Color.black);
-        this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        this.setSize(GameConstants.WINDOW_WIDTH, GameConstants.WINDOW_HEIGHT);
         this.repaint();
 
         if(animator == null)
@@ -117,12 +117,11 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
     private void resetEnemies()
     {
         this.enemies = new ArrayList<>();
-        for(int j = 0 ; j < ENEMY_COL ; ++j)
+        for(int j = 0 ; j < GameConstants.ENEMY_COL ; ++j)
         {
-            for(int i = 0 ; i < ENEMY_ROW ; ++i)
+            for(int i = 0 ; i < GameConstants.ENEMY_ROW ; ++i)
             {
-                System.out.println("Creating enemy...");
-                Enemy tmp = new Enemy(ENEMY_TEXTURE);
+                Enemy tmp = new Enemy(ResourceReference.ENEMY_TEXTURE);
                 tmp.setXPos(344 + j * (tmp.getWidth() + 20));
                 tmp.setYPos(42 + i * (tmp.getHeight() + 10));
                 enemies.add(tmp);
@@ -173,7 +172,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
                     player.getShot().setDestroyed(true);
                     SoundEffects.ENEMY_EXPLOSION.play();
                     nbKill++;
-                    score += ENEMY_SCORE;
+                    score += GameConstants.ENEMY_SCORE;
                 }
             }
             player.getShot().move(true);
@@ -188,13 +187,13 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
             Enemy tmp2 = enemyIt.next();
             int x = tmp2.getXPos();
 
-            if(x >= WINDOW_WIDTH - 2 * player.getWidth() && !alienDirection)
+            if(x >= GameConstants.WINDOW_WIDTH - 2 * player.getWidth() && !alienDirection)
             {
                 alienDirection = true;
                 for(Enemy tmp3 : enemies)
                 {
                     tmp3.moveY();
-                    if(tmp3.getSpeed() <= 2 * ENEMY_BASE_X_SPEED)
+                    if(tmp3.getSpeed() <= 2 * GameConstants.ENEMY_BASE_X_SPEED)
                         tmp3.accelerate(1.5);
                 }
             }
@@ -214,7 +213,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
             {
                 int y = toMove.getYPos();
 
-                if(y > GROUND_HEIGHT - toMove.getHeight())
+                if(y > GameConstants.GROUND_HEIGHT - toMove.getHeight())
                 {
                     inGame = false;
                 }
@@ -227,7 +226,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
     {
         for(Enemy tmp : enemies)
         {
-            rand = (int) (Math.random() * ENEMY_BOMB_CHANCE);
+            rand = (int) (Math.random() * GameConstants.ENEMY_BOMB_CHANCE);
             if(!tmp.getVisible() && rand == 42)
             {
                 tmp.shoot();
@@ -245,7 +244,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
                         inGame = false;
                     }
                 }
-                else if (tmp.getShot().getYPos() >= GROUND_HEIGHT)
+                else if (tmp.getShot().getYPos() >= GameConstants.GROUND_HEIGHT)
                 {
                     tmp.getShot().setDestroyed(true);
                 }
@@ -265,7 +264,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
         g.setFont(font);
 
         g.setColor(Color.green);
-        g.drawLine(0, GROUND_HEIGHT, WINDOW_WIDTH, GROUND_HEIGHT);
+        g.drawLine(0, GameConstants.GROUND_HEIGHT, GameConstants.WINDOW_WIDTH, GameConstants.GROUND_HEIGHT);
         g.drawString("Score : " + score, 10, 715);
 
         drawPlayer(g);
@@ -277,7 +276,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
 
     public void animationCycle()
     {
-        if (nbKill == ENEMY_NB)
+        if (nbKill == GameConstants.ENEMY_NB)
         {
             nbKill = 0;
             resetEnemies();
@@ -322,7 +321,7 @@ public class Canvas extends JPanel implements Runnable, GameConstants, ResourceR
             animationCycle();
 
             timeDiff = System.currentTimeMillis() - beforeTime;
-            sleep = DELAY - timeDiff;
+            sleep = GameConstants.DELAY - timeDiff;
 
             if (sleep < 0) 
                 sleep = 2;

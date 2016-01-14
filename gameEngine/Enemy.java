@@ -6,6 +6,7 @@
 package gameEngine;
 
 
+import resources.ResourceReference;
 import resources.SoundEffects;
 
 import java.awt.Rectangle;
@@ -24,9 +25,9 @@ public class Enemy  extends Spaceship
     {
         super(shipType);
         this.resizeTexture(0.5);
-        this.speed = ENEMY_BASE_X_SPEED;
+        this.speed = GameConstants.ENEMY_BASE_X_SPEED;
         this.ySpeed = this.getHeight();
-        this.shot = new Laser(ENEMY_LASER_TEXTURE);
+        this.shot = new Laser(ResourceReference.ENEMY_LASER_TEXTURE);
         this.shot.flipSprite(true);
     }
 

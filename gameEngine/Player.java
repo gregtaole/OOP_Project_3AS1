@@ -5,6 +5,7 @@
  */
 package gameEngine;
 
+import resources.ResourceReference;
 import resources.SoundEffects;
 
 import java.awt.event.KeyEvent;
@@ -22,11 +23,11 @@ public class Player extends  Spaceship
     public Player(String shipType)
     {
         super(shipType);
-        this.speed = PLAYER_SPEED;
-        this.shot = new Laser(PLAYER_LASER_TEXTURE);
-        this.healthPoints = PLAYER_HEALTH;
-        this.xPos = PLAYER_START_X_POS;
-        this.yPos = PLAYER_START_Y_POS;
+        this.speed = GameConstants.PLAYER_SPEED;
+        this.shot = new Laser(ResourceReference.PLAYER_LASER_TEXTURE);
+        this.healthPoints = GameConstants.PLAYER_HEALTH;
+        this.xPos = GameConstants.PLAYER_START_X_POS;
+        this.yPos = GameConstants.PLAYER_START_Y_POS;
         this.resizeTexture(0.5);
         dx = 0;
     }
@@ -35,9 +36,9 @@ public class Player extends  Spaceship
     {
         this.xPos += dx;
 
-        if(xPos >= WINDOW_WIDTH - 2 * getWidth())
+        if(xPos >= GameConstants.WINDOW_WIDTH - 2 * getWidth())
         {
-            this.xPos = WINDOW_WIDTH - 2 * getWidth();
+            this.xPos = GameConstants.WINDOW_WIDTH - 2 * getWidth();
         }
         else if(xPos <= getWidth())
         {

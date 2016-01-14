@@ -8,12 +8,12 @@ import java.io.IOException;
 import java.net.URL;
 import javax.sound.sampled.*;
 
-public enum SoundEffects implements ResourceReference
+public enum SoundEffects
 {
-    ENEMY_EXPLOSION(SFX_ENEMY_EXPLOSION),
-    ENEMY_LASER(SFX_ENEMY_LASER),
-    PLAYER_EXPLOSION(SFX_PLAYER_EXPLOSION),
-    PLAYER_LASER(SFX_PLAYER_LASER);
+    ENEMY_EXPLOSION(ResourceReference.SFX_ENEMY_EXPLOSION),
+    ENEMY_LASER(ResourceReference.SFX_ENEMY_LASER),
+    PLAYER_EXPLOSION(ResourceReference.SFX_PLAYER_EXPLOSION),
+    PLAYER_LASER(ResourceReference.SFX_PLAYER_LASER);
 
     private Clip clip;
 
@@ -38,5 +38,10 @@ public enum SoundEffects implements ResourceReference
             clip.stop();
         clip.setFramePosition(0);
         clip.start();
+    }
+
+    public Clip getClip()
+    {
+        return clip;
     }
 }

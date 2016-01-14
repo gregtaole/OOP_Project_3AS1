@@ -11,7 +11,7 @@ public class Laser extends SpriteObject
     public Laser(String texture)
     {
         super(texture);
-        this.speed = LASER_SPEED;
+        this.speed = GameConstants.LASER_SPEED;
         this.resizeTexture(0.5);
     }
 
@@ -27,7 +27,7 @@ public class Laser extends SpriteObject
         else
             y += this.speed;
 
-        if(y < 0 || y >= GROUND_HEIGHT - this.getHeight())
+        if(y < 0 || y >= GameConstants.GROUND_HEIGHT - this.getHeight())
             this.setVisible(false);
         else
             this.setYPos(y);

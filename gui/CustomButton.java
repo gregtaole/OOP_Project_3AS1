@@ -5,8 +5,7 @@
  */
 package gui;
 
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
@@ -27,6 +26,7 @@ public class CustomButton extends JButton
         this.setContentAreaFilled(false);
         this.setVerticalTextPosition(SwingConstants.CENTER);
         this.setHorizontalTextPosition(SwingConstants.CENTER);
+        this.setAlignmentX(Component.CENTER_ALIGNMENT);
     }
     
     @Override
