@@ -19,17 +19,36 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- *
- * @author dinervoid
+ * Responsible for loading all the textures and GUI elements.
+ * <p>
+ *     Loads all the required textures and GUI elements from the texture atlases.
+ * </p>
  */
 public final class LoadImageResource
 {
+    /**
+     * List of nodes containing all the information needed to retrieve the textures from textureSheet.
+     */
     private static NodeList textureAtlas;
+
+    /**
+     * List of nodes containing all the information needed to retrieve the textures from GUISheet.
+     */
     private static NodeList GUIAtlas ;
+
+    /**
+     * Image containing all the textures.
+     */
     private static BufferedImage textureSheet;
+
+    /**
+     * Image containing all the GUI elements.
+     */
     private static BufferedImage GUISheet;
-    
-    
+
+    /**
+     * Class constructor.
+     */
     private LoadImageResource()
     {
         textureAtlas =loadImageAtlas(ResourceReference.TEXTURE_ATLAS);
@@ -38,6 +57,14 @@ public final class LoadImageResource
         GUISheet = loadTextureFile(ResourceReference.GUI_SHEET);
     }
 
+    /**
+     * Returns the texture associated with textureName.
+     * <p>
+     *     Searches the textureAtlas node list for a node whose "name" attribute is the same as textureName.
+     * </p>
+     * @param textureName Texture name as it is written in the texture atlas.
+     * @return BufferedImage corresponding to textureName or null if none has been found.
+     */
     public static BufferedImage getTexture(String textureName)
     {
         textureAtlas = loadImageAtlas(ResourceReference.TEXTURE_ATLAS);
@@ -58,7 +85,15 @@ public final class LoadImageResource
         }
         return null;
     }
-    
+
+    /**
+     * Returns the texture associated with elementName.
+     * <p>
+     *     Searches the GUIAtlas node list for a node whose "name" attribute is the same as elementName.
+     * </p>
+     * @param elementName Texture name as it is written in the texture atlas.
+     * @return BufferedImage corresponding to elementName or null if none has been found.
+     */
     public static BufferedImage getGUIElement(String elementName)
     {
         GUIAtlas = loadImageAtlas(ResourceReference.GUI_ATLAS);
@@ -79,7 +114,12 @@ public final class LoadImageResource
         }
         return null;
     }
-    
+
+    /**
+     * Parses an XML texture atlas file to extract information about the textures from it.
+     * @param resourceFile Path to XML file containing the texture atlas.
+     * @return NodeList containing image information or null if an error has occurred while opening resourceFile or parsing it.
+     */
     private static NodeList loadImageAtlas(String resourceFile)
     {
         InputStream file = LoadImageResource.class.getResourceAsStream(resourceFile);
@@ -112,7 +152,12 @@ public final class LoadImageResource
         }
         return null;
     }
-    
+
+    /**
+     * Loads the texture sheet in memory.
+     * @param textureFile Path to the texture file.
+     * @return BufferedImage containing the entire texture sheet.
+     */
     private static BufferedImage loadTextureFile(String textureFile)
     {
         BufferedImage file = null;

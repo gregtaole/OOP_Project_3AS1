@@ -3,7 +3,7 @@ package gameEngine;
 import java.util.EventListener;
 
 /**
- * Created by dinervoid on 1/13/16.
+ * Listener for GameOverEvent.
  */
 public interface GameOverListener extends EventListener
 {

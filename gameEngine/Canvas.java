@@ -26,25 +26,68 @@ import java.util.Iterator;
 import javax.swing.JPanel;
 
 /**
- *
- * @author dinervoid
+ * Displays the actual game and acts as a game loop
+ * <p>
+ *     This class is responsible for running the game loop as well as drawing the different elements in the window
+ * </p>
  */
-
 @SuppressWarnings("serial")
 public class Canvas extends JPanel implements Runnable
 {
+    /**
+     * The player object.
+     */
     private Player player;
-    private ArrayList<Enemy> enemies;
-    private boolean alienDirection;
-    private boolean inGame;
-    private int nbKill;
-    private int score;
-    private int rand;
-    private Thread animator;
-    private Font font;
-    private ArrayList<GameOverListener> gameOverListeners = new ArrayList<>();
-    private BufferedImage playerHealth;
 
+    /**
+     * Linked list of enemies.
+     */
+    private ArrayList<Enemy> enemies;
+
+    /**
+     * Direction aliens are going : true=left , false=right.
+     */
+    private boolean alienDirection;
+
+    /**
+     * Flag indicating whether or not the game is still going.
+     */
+    private boolean inGame;
+
+    /**
+     * Number of enemies destroyed in the current wave.
+     */
+    private int nbKill;
+
+    /**
+     * Player score.
+     */
+    private int score;
+
+    /**
+     * Random variable used in computing the enemy firing chances.
+     */
+    private int rand;
+
+    /**
+     * Thread responsible for the game computation and drawing.
+     */
+    private Thread animator;
+
+    /**
+     * Font used to display text information
+     */
+    private Font font;
+
+    /**
+     * Player health texture.
+     */
+    private BufferedImage playerHealth;
+    private ArrayList<GameOverListener> gameOverListeners = new ArrayList<>();
+
+    /**
+     * Class constructor.
+     */
     public Canvas()
     {
         super();
@@ -98,7 +141,10 @@ public class Canvas extends JPanel implements Runnable
 
         this.initCanvas();
     }
-    
+
+    /**
+     * Initializes the canvas and starts the animator thread.
+     */
     private void initCanvas()
     {
         this.setBackground(Color.black);
@@ -114,6 +160,12 @@ public class Canvas extends JPanel implements Runnable
         this.setDoubleBuffered(true);
     }
 
+    /**
+     * (Re)initializes the enemies list.
+     * <p>
+     *     Called in the constructor and also each time nbKill equals the number of aliens in a wave.
+     * </p>
+     */
     private void resetEnemies()
     {
         this.enemies = new ArrayList<>();
@@ -129,10 +181,14 @@ public class Canvas extends JPanel implements Runnable
         }
     }
 
+    /**
+     * Draws the player, its health and also its projectiles.
+     * @param g Graphics object on which this method will paint.
+     */
     private void drawPlayer(Graphics g)
     {
         g.drawImage(this.player.getTexture(), this.player.getXPos(), this.player.getYPos(), this);
-        if(this.player.getShot().getVisible())
+        if(this.player.getShot().isVisible())
         {
             g.drawImage(this.player.getShot().getTexture(), this.player.getShot().getXPos(), this.player.getShot().getYPos(), this);
         }
@@ -144,21 +200,32 @@ public class Canvas extends JPanel implements Runnable
         }
     }
 
+    /**
+     * Draws the enemies and their projectiles.
+     * @param g Graphics object on which this method will paint.
+     */
     private void drawEnemies(Graphics g)
     {
         for(Enemy tmp : this.enemies)
         {
             if (!tmp.isDestroyed())
                 g.drawImage(tmp.getTexture(), tmp.getXPos(), tmp.getYPos(), this);
-            if (tmp.getShot().getVisible())
+            if (tmp.getShot().isVisible())
                 g.drawImage(tmp.getShot().getTexture(), tmp.getShot().getXPos(), tmp.getShot().getYPos(), this);
         }
     }
 
+    /**
+     * Checks for collision between the player's projectiles and enemies.
+     * <p>
+     *     When a collision is detected, both the player's projectile and the alien are destroyed and nbKill and score are incremented.
+     *     Otherwise the player's shot will continue to move.
+     * </p>
+     */
     private void checkCollisions()
     {
         Iterator<Enemy> enemyIt;
-        if(player.getShot().getVisible())
+        if(player.getShot().isVisible())
         {
             enemyIt = enemies.iterator();
 
@@ -179,6 +246,14 @@ public class Canvas extends JPanel implements Runnable
         }
     }
 
+    /**
+     * Moves the enemies
+     * <p>
+     *     When the sides of the canvas are reached, the direction boolean is changed.
+     *     Enemies will move faster each time they complete a round trip until they reach twice their base speed.
+     *     If an enemy reaches the ground, then the game is finished.
+     * </p>.
+     */
     private void moveEnemies()
     {
         Iterator<Enemy> enemyIt = enemies.iterator();
@@ -222,17 +297,25 @@ public class Canvas extends JPanel implements Runnable
         }
     }
 
+    /**
+     * Computes the enemy bombing.
+     * <p>
+     *     Each game turn, one enemy has a one in GameConstants.ENEMY_BOMB_CHANCE to fire a shot.
+     *     If a shot touches the player, the player's lives will be decremented by one and when they reach zero, the game is ended.
+     *     The shot will otherwise continue to move until it hits the ground and is destroyed.
+     * </p>
+     */
     private void enemyBombing()
     {
         for(Enemy tmp : enemies)
         {
             rand = (int) (Math.random() * GameConstants.ENEMY_BOMB_CHANCE);
-            if(!tmp.getVisible() && rand == 42)
+            if(!tmp.isVisible() && rand == 42)
             {
                 tmp.shoot();
             }
 
-            if(tmp.getShot().getVisible())
+            if(tmp.getShot().isVisible())
             {
                 if(player.getBounds().intersects(tmp.getShot().getBounds()))
                 {
@@ -274,6 +357,9 @@ public class Canvas extends JPanel implements Runnable
         g.dispose();
     }
 
+    /**
+     * Calls the different game methods in order.
+     */
     public void animationCycle()
     {
         if (nbKill == GameConstants.ENEMY_NB)
@@ -290,6 +376,11 @@ public class Canvas extends JPanel implements Runnable
         enemyBombing();
     }
 
+
+    /**
+     * Sends event to all registered GameOverListeners.
+     * @param event GameOverEvent to be sent.
+     */
     public void processGameOverEvent(GameOverEvent event)
     {
         ArrayList<GameOverListener> tempGameOverListeners;
@@ -338,6 +429,10 @@ public class Canvas extends JPanel implements Runnable
         processGameOverEvent(new GameOverEvent(this, AWTEvent.RESERVED_ID_MAX + 1, score));
     }
 
+    /**
+     * Adds a GameOverListener.
+     * @param listener GameOverListener to be added.
+     */
     public synchronized void addGameOverListener(GameOverListener listener)
     {
         if(!gameOverListeners.contains(listener))

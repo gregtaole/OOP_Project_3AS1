@@ -3,11 +3,19 @@ package gameEngine;
 import java.awt.*;
 
 /**
- * Created by dinervoid on 1/9/16.
+ * Projectile object. Fired by both player and aliens.
  */
 public class Laser extends SpriteObject
 {
+    /**
+     * Projectile's speed.
+     */
     private int speed;
+
+    /**
+     * Class constructor.
+     * @param texture String indicating the laser texture.
+     */
     public Laser(String texture)
     {
         super(texture);
@@ -16,8 +24,8 @@ public class Laser extends SpriteObject
     }
 
     /**
-     *
-     * @param direction Direction of the movement : true->up, false->down
+     * Moves the laser in the specified vertical direction.
+     * @param direction Direction of the movement : true=up, false=down.
      */
     public void move(boolean direction)
     {

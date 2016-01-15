@@ -12,10 +12,8 @@ import javax.swing.SwingConstants;
 import resources.LoadImageResource;
 
 /**
- *
- * @author dinervoid
+ * Reimplementation of JButton to use custom button background.
  */
-
 @SuppressWarnings("serial")
 public class CustomButton extends JButton
 {

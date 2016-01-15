@@ -11,15 +11,29 @@ import resources.SoundEffects;
 import java.awt.event.KeyEvent;
 
 /**
- *
- * @author dinervoid
+ * Class representing the player.
  */
-public class Player extends  Spaceship
+public class Player extends SpriteObject
 {
+    /**
+     * Number of health points.
+     */
     private int healthPoints;
+
+    /**
+     * Player horizontal speed.
+     */
     private int dx;
+
+    /**
+     * Projectile.
+     */
     private Laser shot;
-    
+
+    /**
+     * Class constructor.
+     * @param shipType String indicating the ship texture.
+     */
     public Player(String shipType)
     {
         super(shipType);
@@ -32,6 +46,12 @@ public class Player extends  Spaceship
         dx = 0;
     }
 
+    /**
+     * Moves the player ship.
+     * <p>
+     *     If either the left or right border is reached, the ship stays in the same position.
+     * </p>
+     */
     public void move()
     {
         this.xPos += dx;
@@ -46,9 +66,16 @@ public class Player extends  Spaceship
         }
     }
 
+
+    /**
+     * Fires the projectile.
+     * <p>
+     *     A new projectile can be fired only if the previous has already disappeared from the screen.
+     * </p>
+     */
     public void shoot()
     {
-        if(!shot.getVisible())
+        if(!shot.isVisible())
         {
             shot.setXPos(this.xPos + this.getWidth() / 2);
             shot.setYPos(this.yPos);
@@ -58,7 +85,20 @@ public class Player extends  Spaceship
             SoundEffects.PLAYER_LASER.play();
         }
     }
-    
+
+    /**
+     * Determines what to do when a key is pressed on the keyboard.
+     * <p>
+     *     Depending on which key is pressed :
+     *     <ul>
+     *         <li>Left key arrow : sets dx so that player will move to the left.</li>
+     *         <li>Right key arrow : sets dx so that player will move to the right.</li>
+     *         <li>Space bar : shoot the projectile.</li>
+     *         <li>Other : does nothing</li>
+     *     </ul>
+     *
+     * @param e Incoming key event.
+     */
     public void keyPressed(KeyEvent e)
     {
         int key = e.getKeyCode();
@@ -79,6 +119,14 @@ public class Player extends  Spaceship
         }
     }
 
+    /**
+     * Determines what to do when a key is released on the keyboard.
+     * <p>
+     *     If either left or right arrow keys are pressed, sets dx to 0 so that the player will stop moving.
+     *     Otherwise, does nothing.
+     * </p>
+     * @param e Incoming key event.
+     */
     public void keyReleased(KeyEvent e)
     {
         int key = e.getKeyCode();
@@ -94,18 +142,34 @@ public class Player extends  Spaceship
         }
     }
 
+    /**
+     * Getter for healthPoints.
+     * @return If for some reason healthPoints less than 0, sets it back to 0.
+     */
     public int getHealthPoints()
     {
+        if(this.healthPoints < 0)
+            this.healthPoints = 0;
         return this.healthPoints;
     }
 
+    /**
+     * Getter for shot.
+     * @return Laser object.
+     */
     public Laser getShot()
     {
         return this.shot;
     }
-    
+
+    /**
+     * Setter for healthPoints.
+     * @param newHealth New amount of health points.
+     */
     public void setHealthPoints(int newHealth)
     {
+        if(newHealth < 0)
+            newHealth = 0;
         this.healthPoints = newHealth;
     }
 }

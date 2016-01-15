@@ -5,11 +5,6 @@
  */
 package gui;
 
-/**
- *
- * @author dinervoid
- */
-
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.io.IOException;
@@ -23,19 +18,39 @@ import resources.LoadImageResource;
 import resources.ResourceReference;
 import resources.SoundEffects;
 
+/**
+ * Main window of the application
+ */
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame
 {
+    /**
+     * Font used to display all text.
+     */
     private Font font;
+
+    /**
+     * Background music for the game.
+     */
     private Clip bgmClip;
+
+    /**
+     * Dimension of the main menu
+     */
     private Dimension startDimension;
 
+    /**
+     * Class constructor
+     */
     public MainWindow()
     {
         super();
         this.initUI();
     }
-    
+
+    /**
+     * Initializes the main menu.
+     */
     private void mainMenu()
     {
         CustomLabel titleLabel = new CustomLabel("Welcome to SPACE INVADERS!");
@@ -43,35 +58,28 @@ public class MainWindow extends JFrame
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
         CustomButton playButton = new CustomButton("New Game", ResourceReference.BLUE_BUTTON);
-        CustomButton optionButton = new CustomButton("Options", ResourceReference.BLUE_BUTTON);
+        CustomButton rulesButton = new CustomButton("Rules", ResourceReference.BLUE_BUTTON);
+        CustomButton optionButton = new CustomButton("Settings", ResourceReference.BLUE_BUTTON);
         CustomButton quitButton = new CustomButton("Quit", ResourceReference.BLUE_BUTTON);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         centerPanel.add(playButton);
+        centerPanel.add(rulesButton);
         centerPanel.add(optionButton);
         centerPanel.add(quitButton);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         centerPanel.setBackground(Color.black);
+        playButton.addActionListener(actionEvent -> play());
+        optionButton.addActionListener(actionEvent -> options());
+        quitButton.addActionListener(actionEvent -> System.exit(0));
+        rulesButton.addActionListener(actionEvent -> rulesButtonClick());
 
-        JPanel bottomPanel = new JPanel(new FlowLayout());
-        CustomButton rulesButton = new CustomButton("Rules", ResourceReference.BLUE_BUTTON);
-        CustomButton leaderButton = new CustomButton("Leaderboard", ResourceReference.BLUE_BUTTON);
-        bottomPanel.add(rulesButton);
-        bottomPanel.add(Box.createRigidArea(new Dimension(5, 0)));
-        bottomPanel.add(leaderButton);
-        bottomPanel.setBackground(Color.black);
-
-        playButton.addActionListener(e->playButtonClick());
-        optionButton.addActionListener(e->optionButtonClick());
-        quitButton.addActionListener(e->quitButtonClick());
-
-        //this.getContentPane().setLayout(new BoxLayout(this.getContentPane(), BoxLayout.PAGE_AXIS));
         this.add(titleLabel, BorderLayout.PAGE_START);
         this.add(centerPanel, BorderLayout.CENTER);
-        this.add(bottomPanel, BorderLayout.PAGE_END);
 
         this.getContentPane().setBackground(Color.black);
         this.getContentPane().setForeground(Color.green);
 
+        //Load the custom font
         try
         {
             InputStream fontStream = getClass().getResourceAsStream(ResourceReference.FONT);
@@ -86,6 +94,7 @@ public class MainWindow extends JFrame
             e.printStackTrace(System.err);
         }
 
+        //Load the background music
         try
         {
             URL url = this.getClass().getResource(ResourceReference.BGM_FILE);
@@ -101,7 +110,10 @@ public class MainWindow extends JFrame
 
         bgmClip.loop(Clip.LOOP_CONTINUOUSLY);
     }
-    
+
+    /**
+     * Sets up the main window properties.
+     */
     private void initUI()
     {
         setTitle("Projet POO");
@@ -113,7 +125,12 @@ public class MainWindow extends JFrame
         this.pack();
         startDimension = new Dimension(this.getSize());
     }
-    
+
+    /**
+     * Changes the font of the component passed as the first parameter and all of its sub-components' as well.
+     * @param component The component of which the font is to be changed.
+     * @param font The font to be applied to component.
+     */
     public static void changeFont(Component component, Font font)
     {
         component.setFont(font);
@@ -125,7 +142,14 @@ public class MainWindow extends JFrame
             }
         }
     }
-    
+
+    /**
+     * Invokes a Canvas object to start the game
+     * <p>
+     *     Clears the window of its current content and replaces it by the game canvas.
+     *     When the GameOverEvent is received, the game canvas is cleared and the game over screen is displayed.
+     *
+     */
     private void play()
     {
         this.getContentPane().removeAll();
@@ -148,6 +172,12 @@ public class MainWindow extends JFrame
         });
     }
 
+    /**
+     * Displays the settings menu
+     * <p>
+     *     If the volume control is not supported by the system, displays a message telling the user so.
+     * </p>
+     */
     private void options()
     {
         JPanel optionPanel = new JPanel();
@@ -162,6 +192,7 @@ public class MainWindow extends JFrame
         CustomButton menuButton = new CustomButton("Back to main menu", ResourceReference.BLUE_BUTTON);
         menuButton.addActionListener(e->backToMenuClick());
 
+        //
         if(!bgmClip.isControlSupported(FloatControl.Type.VOLUME) || !SoundEffects.ENEMY_EXPLOSION.getClip().isControlSupported(FloatControl.Type.VOLUME))
         {
             CustomLabel volumeNotSupportedLabel = new CustomLabel("Volume adjustment is not supported on your computer");
@@ -207,13 +238,9 @@ public class MainWindow extends JFrame
         JCheckBox muteCheckBox = new JCheckBox("Mute sound");
         muteCheckBox.addItemListener(itemEvent -> {
             if(itemEvent.getStateChange() == ItemEvent.SELECTED)
-            {
                 bgmClip.stop();
-            }
             else
-            {
                 bgmClip.start();
-            }
         });
         muteCheckBox.setAlignmentX(Component.CENTER_ALIGNMENT);
         muteCheckBox.setBackground(Color.black);
@@ -250,6 +277,13 @@ public class MainWindow extends JFrame
         this.pack();
     }
 
+    /**
+     * <p>
+     *     Creates the panel used to display the game over message.
+     * </p>
+     * @param score Player score at the end of the game.
+     * @return JPanel displaying score and a back to menu button.
+     */
     private JPanel gameOverPanel(int score)
     {
         JPanel panel = new JPanel();
@@ -261,7 +295,7 @@ public class MainWindow extends JFrame
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
 
         panel.setBackground(Color.black);
-        menuButton.addActionListener(e->backToMenuClick());
+        menuButton.addActionListener(actionEvent -> backToMenuClick());
 
         panel.add(label);
         panel.add(scoreLabel);
@@ -273,24 +307,38 @@ public class MainWindow extends JFrame
         return panel;
     }
 
-    private void playButtonClick()
+    /**
+     * <p>Displays the rules of the game.</p>
+     * <p>actionEvent handler called when the "Rules" button is clicked in the main menu.</p>
+     */
+    private void rulesButtonClick()
     {
-        System.out.println("Play");
-        play();
-    }
-    
-    private void optionButtonClick()
-    {
-        System.out.println("Options");
-        options();
-    }
-    
-    private void quitButtonClick()
-    {
-        System.out.println("Quit");
-        System.exit(0);
+        JPanel rulesPanel = new JPanel();
+        rulesPanel.setLayout(new BoxLayout(rulesPanel, BoxLayout.PAGE_AXIS));
+        rulesPanel.setBackground(Color.black);
+        JLabel rulesLabel = new JLabel(
+                "<html><h1>Space Invaders Rules</h1><p>The goal of the game is to survive as long as possible against waves of approaching aliens.</p><p>The aliens must be destroyed by shooting at them, using the space bar.</p><p>You can move along the horizontal axis by pressing the left and right arrow keys.</p><p>The enemies must not be allowed to reach the ground or the game will be lost.</p><p>They are also able to shoot, so care must be taken to avoid the projectiles.</p></html>");
+        rulesLabel.setForeground(Color.green);
+        rulesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        CustomButton backButton = new CustomButton("Back", ResourceReference.BLUE_BUTTON);
+        backButton.addActionListener(actionEvent -> backToMenuClick());
+
+        rulesPanel.add(rulesLabel);
+        rulesPanel.add(backButton);
+
+        this.changeFont(rulesPanel, font);
+
+        this.getContentPane().removeAll();
+        this.getContentPane().add(rulesPanel);
+        this.getContentPane().setPreferredSize(rulesPanel.getPreferredSize());
+        this.repaint();
+        this.pack();
     }
 
+    /**
+     * <p>Displays the main menu</p>
+     * <p>actionEvent handler called when the back to menu button is clicked from the different screens.</p>
+     */
     private void backToMenuClick()
     {
         this.getContentPane().removeAll();

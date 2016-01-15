@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by dinervoid on 1/14/16.
+ * Reimplementation of JLabel to directly display labels with the applications color scheme.
  */
 public class CustomLabel extends JLabel
 {
