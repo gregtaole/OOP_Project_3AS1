@@ -7,6 +7,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -55,9 +56,17 @@ public class MainWindow extends JFrame
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.PAGE_AXIS));
         CustomButton playButton = new CustomButton("New Game", ResourceReference.BLUE_BUTTON);
+        playButton.addActionListener(actionEvent -> play());
+        playButton.setMnemonic(KeyEvent.VK_N);
         CustomButton rulesButton = new CustomButton("Rules", ResourceReference.BLUE_BUTTON);
+        rulesButton.addActionListener(actionEvent -> rulesButtonClick());
+        rulesButton.setMnemonic(KeyEvent.VK_R);
         CustomButton optionButton = new CustomButton("Settings", ResourceReference.BLUE_BUTTON);
+        optionButton.addActionListener(actionEvent -> options());
+        optionButton.setMnemonic(KeyEvent.VK_S);
         CustomButton quitButton = new CustomButton("Quit", ResourceReference.BLUE_BUTTON);
+        quitButton.addActionListener(actionEvent -> System.exit(0));
+        quitButton.setMnemonic(KeyEvent.VK_Q);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         centerPanel.add(playButton);
         centerPanel.add(rulesButton);
@@ -65,10 +74,7 @@ public class MainWindow extends JFrame
         centerPanel.add(quitButton);
         centerPanel.add(Box.createRigidArea(new Dimension(0, 30)));
         centerPanel.setBackground(Color.black);
-        playButton.addActionListener(actionEvent -> play());
-        optionButton.addActionListener(actionEvent -> options());
-        quitButton.addActionListener(actionEvent -> System.exit(0));
-        rulesButton.addActionListener(actionEvent -> rulesButtonClick());
+
 
         this.add(titleLabel, BorderLayout.PAGE_START);
         this.add(centerPanel, BorderLayout.CENTER);
@@ -189,6 +195,7 @@ public class MainWindow extends JFrame
 
         CustomButton menuButton = new CustomButton("Back to main menu", ResourceReference.BLUE_BUTTON);
         menuButton.addActionListener(e->backToMenuClick());
+        menuButton.setMnemonic(KeyEvent.VK_B);
 
         //
         if(!bgmClip.isControlSupported(FloatControl.Type.VOLUME) || !SoundEffects.ENEMY_EXPLOSION.getClip().isControlSupported(FloatControl.Type.VOLUME))
@@ -294,6 +301,7 @@ public class MainWindow extends JFrame
 
         panel.setBackground(Color.black);
         menuButton.addActionListener(actionEvent -> backToMenuClick());
+        menuButton.setMnemonic(KeyEvent.VK_B);
 
         panel.add(label);
         panel.add(scoreLabel);
@@ -320,6 +328,7 @@ public class MainWindow extends JFrame
         rulesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         CustomButton backButton = new CustomButton("Back", ResourceReference.BLUE_BUTTON);
         backButton.addActionListener(actionEvent -> backToMenuClick());
+        backButton.setMnemonic(KeyEvent.VK_B);
 
         rulesPanel.add(rulesLabel);
         rulesPanel.add(backButton);
