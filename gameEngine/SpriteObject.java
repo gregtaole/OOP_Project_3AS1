@@ -5,6 +5,8 @@
  */
 package gameEngine;
 
+import gui.LoadImageResource;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -63,7 +65,7 @@ public class SpriteObject
      */
     public SpriteObject(String spriteName)
     {
-        this.texture = resources.LoadImageResource.getTexture(spriteName);
+        this.texture = LoadImageResource.getTexture(spriteName);
         this.width = texture.getWidth();
         this.height = texture.getHeight();
         this.xPos = 0;

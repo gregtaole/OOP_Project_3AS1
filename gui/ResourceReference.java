@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package resources;
+package gui;
 
 /**
  * Class containing various String constants representing paths to resources or texture names.

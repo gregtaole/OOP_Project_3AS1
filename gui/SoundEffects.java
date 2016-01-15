@@ -1,4 +1,4 @@
-package resources;
+package gui;
 
 import java.io.IOException;
 import java.net.URL;

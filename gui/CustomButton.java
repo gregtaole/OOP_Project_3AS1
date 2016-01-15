@@ -9,7 +9,6 @@ import java.awt.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
-import resources.LoadImageResource;
 
 /**
  * Reimplementation of JButton to use custom button background.

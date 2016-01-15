@@ -5,8 +5,8 @@
  */
 package gameEngine;
 
-import resources.ResourceReference;
-import resources.SoundEffects;
+import gui.ResourceReference;
+import gui.SoundEffects;
 
 import java.awt.event.KeyEvent;
 

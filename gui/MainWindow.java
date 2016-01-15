@@ -14,9 +14,6 @@ import javax.sound.sampled.*;
 import javax.swing.*;
 
 import gameEngine.Canvas;
-import resources.LoadImageResource;
-import resources.ResourceReference;
-import resources.SoundEffects;
 
 /**
  * Main window of the application
@@ -94,6 +91,18 @@ public class MainWindow extends JFrame
             e.printStackTrace(System.err);
         }
 
+    }
+
+    /**
+     * Sets up the main window properties.
+     */
+    private void initUI()
+    {
+        setTitle("Projet POO");
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
+        mainMenu();
         //Load the background music
         try
         {
@@ -109,18 +118,7 @@ public class MainWindow extends JFrame
         }
 
         bgmClip.loop(Clip.LOOP_CONTINUOUSLY);
-    }
 
-    /**
-     * Sets up the main window properties.
-     */
-    private void initUI()
-    {
-        setTitle("Projet POO");
-        setLocationRelativeTo(null);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        mainMenu();
         this.setResizable(false);
         this.pack();
         startDimension = new Dimension(this.getSize());
@@ -185,7 +183,7 @@ public class MainWindow extends JFrame
         optionPanel.setForeground(Color.green);
         optionPanel.setLayout(new BoxLayout(optionPanel, BoxLayout.PAGE_AXIS));
 
-        CustomLabel optionLabel = new CustomLabel("OPTIONS");
+        CustomLabel optionLabel = new CustomLabel("SETTINGS");
         optionPanel.add(optionLabel);
         optionPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
@@ -235,7 +233,7 @@ public class MainWindow extends JFrame
             optionPanel.add(SFXVolumeSlider);
         }
 
-        JCheckBox muteCheckBox = new JCheckBox("Mute sound");
+        JCheckBox muteCheckBox = new JCheckBox("Mute BGM");
         muteCheckBox.addItemListener(itemEvent -> {
             if(itemEvent.getStateChange() == ItemEvent.SELECTED)
                 bgmClip.stop();

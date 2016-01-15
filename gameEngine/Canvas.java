@@ -5,8 +5,9 @@
  */
 package gameEngine;
 
-import resources.ResourceReference;
-import resources.SoundEffects;
+import gui.LoadImageResource;
+import gui.ResourceReference;
+import gui.SoundEffects;
 
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -97,7 +98,7 @@ public class Canvas extends JPanel implements Runnable
         nbKill = 0;
         score = 0;
         rand = 42;
-        playerHealth = resources.LoadImageResource.getTexture(ResourceReference.PLAYER_HEALTH_TEXTURE);
+        playerHealth = LoadImageResource.getTexture(ResourceReference.PLAYER_HEALTH_TEXTURE);
 
         //Resize playerHealth to half its size
         int newWidth = (int) (0.5 * playerHealth.getWidth());
