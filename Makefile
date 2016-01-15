@@ -6,7 +6,10 @@ run: MainWindow
 MainWindow:
 	javac -sourcepath . ./**/*.java
 
+jar: MainWindow
+	jar cvfm SpaceInvaders.jar MANIFEST ./**/*.class resources/
+
 .PHONY: clean
 
 clean:
-	rm -rf ./**/*.class
+	rm -rf ./**/*.class *.jar
